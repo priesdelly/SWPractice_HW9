@@ -11,7 +11,7 @@ exports.getHospitals = async (req, res, next) => {
     const reqQuery = {...req.query};
 
     //Fields to exclude
-    const removeFields = ['select', 'sort'];
+    const removeFields = ['select', 'sort',];
 
 
     let queryStr = JSON.stringify(reqQuery);
@@ -24,6 +24,8 @@ exports.getHospitals = async (req, res, next) => {
         query = query.select(fields);
     }
 
+    console.log(query);
+
     //Sort
     if(req.query.sort) {
         const sortBy=req.query.sort.split(',').join(' ');
@@ -31,6 +33,8 @@ exports.getHospitals = async (req, res, next) => {
     } else {
         query = query.sort('-createdAt');
     }
+
+    console.log(query);
 
     try {
         // const hospitals = await Hospital.find();
