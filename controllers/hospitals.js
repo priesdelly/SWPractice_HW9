@@ -1,4 +1,5 @@
 const Hospital = require('../models/Hospital');
+const vacCenter = require('../models/VacCenter');
 
 //@desc     Get all hospitals
 //@route    GET /api/v1/hospitals
@@ -17,7 +18,7 @@ exports.getHospitals = async (req, res, next) => {
   console.log(reqQuery);
 
   let queryStr = JSON.stringify(reqQuery);
-  queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, match=>`$${match}`)
+  queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`)
   query = Hospital.find(JSON.parse(queryStr)).populate('appointments');;
 
   //Select Fields
@@ -141,4 +142,18 @@ exports.deleteHospital = async (req, res, next) => {
   } catch (err) {
     return res.status(400).json({ success: false });
   }
+};
+
+//@desc Get vaccine centers
+//@route GET /api/v1/vaccineCenters/:
+//@access Public
+exports.getVacCenters = async (req, res, next) => {
+  vacCenter.getAll((err, data) => {
+    if (err) {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving Vaccine Centers."
+      });
+    }
+    res.send(data);
+  });
 };
