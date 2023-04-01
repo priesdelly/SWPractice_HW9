@@ -1,10 +1,11 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
-const connectDB = require('./config/db')
+const connectDB = require('./config/db');
+const cors = require('cors');
 
 //Load env vars
-dotenv.config({path:'./config/config.env'});
+dotenv.config({ path: './config/config.env' });
 
 //Connect to database
 connectDB();
@@ -15,6 +16,11 @@ const auth = require("./routes/auth");
 const appointments = require('./routes/appointments');
 
 const app = express();
+
+app.use(cors({
+    origin: 'http://localhost:3000',
+    optionsSuccessStatus: 200
+}));
 
 //Body parser
 app.use(express.json());
@@ -28,7 +34,7 @@ const PORT = process.env.PORT || 5001;
 const server = app.listen(PORT, console.log('Server running in ', process.env.NODE_ENV, ' mode on port ', PORT));
 
 //Handle unhandled promise rejections
-process.on('unhandledRejection', (err,promise) => {
+process.on('unhandledRejection', (err, promise) => {
     console.log(`Error: ${err.message}`);
     //Close server & exit process
     server.close(() => process.exit(1));
