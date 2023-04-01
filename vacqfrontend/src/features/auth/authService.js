@@ -1,25 +1,43 @@
-import axios from 'axios'
+import axios from "axios";
 
-const API_URL = 'http://localhost:5001/api/v1/auth/register'
+const API_URL = "http://localhost:5001/api/v1/auth";
 
 //Register user
 const register = async (userData) => {
-    try {
-        const response = await axios.post(API_URL, userData);
-        console.log(JSON.stringify(response.data));
-        console.log(response.data.name);
-        if (response.data) {
-            localStorage.setItem('user', response.data.name);
-            return response.data.name;
-        }
-    } catch (error) {
-        console.log('authService: register');
-        console.log(error);
-    }
-}
+  const url = API_URL + "/register";
+  console.log("call uri: ", url);
+
+  const response = await axios.post(url, userData);
+  if (response.data) {
+    localStorage.setItem("user", response.data.name);
+
+  }
+  console.log(response.data);
+  return response.data.name;
+};
+
+//Login user
+const login = async (userData) => {
+  const url = API_URL + "/login";
+  console.log("call uri: ", url);
+
+  const response = await axios.post(url, userData);
+  if (response.data) {
+    localStorage.setItem("user", response.data.name);
+  }
+  console.log(response.data);
+  return response.data;
+};
+
+const logout = () => {
+  // localStorage.setItem('user', null);
+  localStorage.removeItem("user");
+};
 
 const authService = {
-    register,
-}
+  register,
+  logout,
+  login
+};
 
 export default authService;
